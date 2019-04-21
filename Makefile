@@ -1,6 +1,6 @@
 all: libfoo.so somemodule.so example1.so
 # from python2-config --includes
-PYTHON_INCLUDES=-I/usr/include/python2.7 -I/usr/include/python2.7 -I/usr/lib/python2.7/site-packages/numpy/core/include
+PYTHON_INCLUDES=-I/usr/include/python2.7 -I/usr/include/python2.7 -I/usr/lib64/python2.7/site-packages/numpy/core/include
 
 test: all
 	./fooWrapper.py

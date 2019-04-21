@@ -404,7 +404,7 @@ template <class T> void NRvector<T>::initpyvec(PyObject *a) {
   v = (nn > 0 ? (T *)PyArray_DATA(a) : NULL);
 }
 template <class T> NRvector<T>::NRvector(PyObject *a) { initpyvec(a); }
-template <class T> NRvector<T>::NRvector(char *name, char *dict = NULL) {
+template <class T> NRvector<T>::NRvector(char *name, char *dict) {
   initpyvec(NRpyGetByName(name, dict));
 }
 
@@ -474,7 +474,7 @@ template <class T> void NRvector<T>::resize(int newn) {
         PyMem_Free(v);
       v = nn > 0 ? (T *)PyMem_Malloc(nn * sizeof(T)) : NULL;
     } else { // Python
-      int dm[1];
+      npy_intp dm[1];
       dm[0] = newn;
       PyArray_Dims mydims;
       mydims.ptr = dm;
@@ -493,7 +493,7 @@ template <class T> void NRvector<T>::assign(int newn, const T &a) {
     v[i] = a;
 }
 
-template <class T> void NRvector<T>::assign(char *name, char *dict = NULL) {
+template <class T> void NRvector<T>::assign(char *name, char *dict) {
   if (!ownsdata)
     NRpyException("Attempt to assign Python array to another Python array.");
   if (v != NULL)
@@ -578,7 +578,7 @@ template <class T> void NRmatrix<T>::initpymat(PyObject *a) {
     v[i] = v[i - 1] + mm;
 }
 template <class T> NRmatrix<T>::NRmatrix(PyObject *a) { initpymat(a); }
-template <class T> NRmatrix<T>::NRmatrix(char *name, char *dict = NULL) {
+template <class T> NRmatrix<T>::NRmatrix(char *name, char *dict) {
   initpymat(NRpyGetByName(name, dict));
 }
 
@@ -677,7 +677,7 @@ template <class T> void NRmatrix<T>::resize(int newn, int newm) {
     } else {
       if (v != NULL)
         delete[](v);
-      int dm[2];
+      npy_intp dm[2];
       dm[0] = newn;
       dm[1] = newm;
       PyArray_Dims mydims;
@@ -703,7 +703,7 @@ template <class T> void NRmatrix<T>::assign(int newn, int newm, const T &a) {
       v[i][j] = a;
 }
 
-template <class T> void NRmatrix<T>::assign(char *name, char *dict = NULL) {
+template <class T> void NRmatrix<T>::assign(char *name, char *dict) {
   if (!ownsdata)
     NRpyException("Attempt to assign Python matrix to another Python matrix");
   if (v != NULL) {

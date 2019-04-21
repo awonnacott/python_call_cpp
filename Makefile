@@ -3,7 +3,9 @@ all: libfoo.so somemodule.so example1.so
 PYTHON_INCLUDES=-I/usr/include/python2.7 -I/usr/include/python2.7 -I/usr/lib/python2.7/site-packages/numpy/core/include
 
 test: all
-	./example1.py
+	./fooWrapper.py
+	./somemodule_test.py
+	./test.py
 
 libfoo.so: foo.o
 	g++ -shared -Wl,-soname,libfoo.so -o libfoo.so foo.o
@@ -14,3 +16,6 @@ foo.o: foo.cpp
 	g++ -shared $< -o $@
 %.o: %.cpp nr3python.h
 	g++ ${PYTHON_INCLUDES} -c -fPIC -fpermissive -w $< -o $@
+
+clean:
+	rm -f *.so *.o

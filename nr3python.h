@@ -169,7 +169,8 @@ struct NRpyList {
     // calling routine.
   }
 };
-int NRpyInt(NRpyList &list) { // cast list to integer value of its 1st element
+int NRpyInt(const NRpyList &list) {
+  // cast list to integer value of its 1st element
   return NRpyInt(PyList_GetItem(list.p, 0));
 }
 // ToDo: also make NRpyList constructors for NRvector and NRmatrix
@@ -474,7 +475,7 @@ template <class T> void NRvector<T>::resize(int newn) {
         PyMem_Free(v);
       v = nn > 0 ? (T *)PyMem_Malloc(nn * sizeof(T)) : NULL;
     } else { // Python
-      npy_intp dm[1];
+      npy_int dm[1];
       dm[0] = newn;
       PyArray_Dims mydims;
       mydims.ptr = dm;
@@ -677,7 +678,7 @@ template <class T> void NRmatrix<T>::resize(int newn, int newm) {
     } else {
       if (v != NULL)
         delete[](v);
-      npy_intp dm[2];
+      npy_int dm[2];
       dm[0] = newn;
       dm[1] = newm;
       PyArray_Dims mydims;
